@@ -4,4 +4,4 @@ dj-database-url
 pytz
 Pillow
 django-ckeditor
-widget-tweaks
+django-widget-tweaks
