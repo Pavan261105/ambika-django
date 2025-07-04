@@ -1,0 +1,94 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+<h1 class="mb-4 text-center fw-bold" style="color: var(--primary-color)">Our Products</h1>
+
+<!-- Search and Filter Form -->
+<form method="get" class="row g-3 mb-5 p-4 bg-light rounded shadow-sm">
+  <div class="col-md-5 col-12">
+    <input type="text" name="q" class="form-control form-control-lg" placeholder="🔎 Search by product name..." value="{{ request.GET.q }}">
+  </div>
+  <div class="col-md-5 col-12">
+    <select name="category" class="form-select form-select-lg">
+      <option value="">All Categories</option>
+      {% for cat in categories %}
+        <option value="{{ cat.id }}" {% if request.GET.category == cat.id|stringformat:"s" %}selected{% endif %}>
+          {{ cat.name }}
+        </option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-md-2 col-12 d-grid">
+    <button type="submit" class="btn btn-primary btn-lg">Search</button>
+  </div>
+</form>
+
+<!-- Products Grid -->
+<!-- Products Grid -->
+<div class="row">
+  {% for product in products %}
+    <div class="col-lg-3 col-sm-6 mb-4">
+      <div class="card h-100 shadow-sm border-0 rounded-4 d-flex flex-column">
+        
+        <!-- Image Container -->
+        <div class="bg-white d-flex align-items-center justify-content-center" style="height: 250px;">
+          <img src="{{ product.image.url }}" class="img-fluid p-3" style="max-height: 220px; object-fit: contain;" alt="{{ product.name }}">
+        </div>
+        
+        <!-- Card Body -->
+        <div class="card-body d-flex flex-column p-4">
+          <h5 class="card-title fw-bold">{{ product.name }}</h5>
+          <p class="card-text small text-muted flex-grow-1">{{ product.short_description|truncatechars:80 }}</p>
+          <p class="card-text fw-bold fs-5" style="color: var(--accent-color)">₹{{ product.price }}</p>
+          <p class="card-text"><span class="text-muted">Category:</span> {{ product.category.name }}</p>
+
+          {% if product.stock == 0 %}
+            <span class="badge bg-danger px-3 py-2">Out of Stock</span>
+          {% elif product.stock < 10 %}
+            <span class="badge bg-warning text-dark px-3 py-2">Only {{ product.stock }} Available</span>
+          {% else %}
+            <span class="badge bg-success px-3 py-2">In Stock</span>
+          {% endif %}
+
+          <a href="{% url 'product_detail' product.id %}" class="btn btn-outline-primary w-100 mt-3">View Details</a>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <div class="col-12 text-center">
+      <p class="text-muted fs-5">😞 No products found.</p>
+    </div>
+  {% endfor %}
+</div>
+
+<!-- Pagination -->
+<div class="d-flex justify-content-center mt-4">
+  <nav>
+    <ul class="pagination pagination-md">
+      {% if products.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.category %}category={{ request.GET.category }}&{% endif %}page={{ products.previous_page_number }}">«</a>
+        </li>
+      {% else %}
+        <li class="page-item disabled"><span class="page-link">«</span></li>
+      {% endif %}
+
+      {% for num in products.paginator.page_range %}
+        <li class="page-item {% if num == products.number %}active{% endif %}">
+          <a class="page-link" href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.category %}category={{ request.GET.category }}&{% endif %}page={{ num }}">{{ num }}</a>
+        </li>
+      {% endfor %}
+
+      {% if products.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.category %}category={{ request.GET.category }}&{% endif %}page={{ products.next_page_number }}">»</a>
+        </li>
+      {% else %}
+        <li class="page-item disabled"><span class="page-link">»</span></li>
+      {% endif %}
+    </ul>
+  </nav>
+</div>
+
+{% endblock %}
