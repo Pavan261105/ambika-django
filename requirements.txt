@@ -3,3 +3,5 @@ gunicorn
 whitenoise
 dj-database-url
 psycopg2
+django-widget-tweaks
+"django-widget-tweaks" 
