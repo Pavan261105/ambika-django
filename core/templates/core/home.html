@@ -1,0 +1,123 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Home - Ambika Traders{% endblock %}
+
+{% block content %}
+<section class="py-5 bg-light" data-aos="fade-up">
+  <div class="container">
+    <div class="row align-items-center">
+      <!-- Left side: Text -->
+      <div class="col-md-6 text-center text-md-start mb-4 mb-md-0">
+        <h1 class="display-4 fw-bold" style="color: var(--primary-color);">Welcome to Ambika Traders</h1>
+        <p class="lead mb-3">Your trusted wholesaler for ropes, animal items, and agriculture tools—serving generations with quality and reliability.</p>
+        
+        <ul class="list-unstyled mb-4">
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Premium-grade ropes and farm accessories</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Fair, transparent wholesale pricing</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Fast, reliable delivery across the region</li>
+        </ul>
+        
+        <div class="d-grid gap-2 d-md-block">
+          <a href="{% url 'products' %}" class="btn btn-primary btn-lg me-2">Explore Our Products</a>
+          <a href="{% url 'about' %}" class="btn btn-outline-primary btn-lg">Learn About Us</a>
+        </div>
+      </div>
+
+      <!-- Right side: Round Logo -->
+      <div class="col-md-6 text-center">
+        <img src="{% static 'images/logo.jpg' %}" alt="Ambika Traders Logo" class="img-fluid rounded-circle shadow" style="max-width: 300px;">
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="py-5 bg-white" data-aos="fade-up">
+    <div class="container">
+        <h2 class="text-center mb-4 fw-bold" style="color: var(--primary-color)">Featured Products</h2>
+        <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+    <div class="carousel-item active">
+        <div class="row">
+            {% for product in products|slice:"0:4" %}
+                <div class="col-md-3 col-sm-6 mb-3">
+                    <div class="card h-100 shadow-sm border-0 rounded-4 d-flex flex-column">
+                        <!-- Fixed-height image area with contain -->
+                        <div class="d-flex align-items-center justify-content-center bg-white" style="height: 220px;">
+                        <img src="{{ product.image.url }}" class="img-fluid p-2" style="max-height: 200px; object-fit: contain;" alt="{{ product.name }}">
+                        </div>
+
+                        <!-- Card Body with flex-grow -->
+                        <div class="card-body d-flex flex-column p-3">
+                        <h5 class="card-title fw-bold">{{ product.name }}</h5>
+                        <p class="text-muted small flex-grow-1">{{ product.short_description|truncatechars:60 }}</p>
+                        <p class="fw-bold" style="color: var(--accent-color)">₹{{ product.price }}</p>
+                        <a href="{% url 'product_detail' product.id %}" class="btn btn-outline-primary w-100 mt-2">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="{% url 'products' %}" class="btn btn-outline-primary btn-lg">View All Products</a>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light" data-aos="fade-up">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-3" style="color: var(--primary-color)">About Ambika Traders</h2>
+        <p class="lead">Family-owned since 19XX, delivering quality ropes, animal items, and agriculture tools to wholesalers across the region. Reliability, quality, and personal service define us.</p>
+        <a href="{% url 'about' %}" class="btn btn-primary btn-lg mt-3">Learn More About Us</a>
+    </div>
+</section>
+
+<section class="py-5 bg-white" data-aos="fade-up">
+    <div class="container">
+        <h2 class="text-center fw-bold mb-4" style="color: var(--primary-color)">Why Our Customers Choose Us</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 text-center shadow-sm border-0">
+                    <div class="card-body">
+                        <i class="bi bi-star-fill fs-1 text-warning"></i>
+                        <h5 class="fw-bold mt-3">Premium Quality</h5>
+                        <p class="text-muted">Top-grade materials for ropes, animal accessories, and farm tools.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 text-center shadow-sm border-0">
+                    <div class="card-body">
+                        <i class="bi bi-people-fill fs-1 text-primary"></i>
+                        <h5 class="fw-bold mt-3">Trusted Expertise</h5>
+                        <p class="text-muted">Family-owned business with decades of reliable service.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 text-center shadow-sm border-0">
+                    <div class="card-body">
+                        <i class="bi bi-truck fs-1 text-success"></i>
+                        <h5 class="fw-bold mt-3">Fast Delivery</h5>
+                        <p class="text-muted">Prompt dispatch and personal attention for every order.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}

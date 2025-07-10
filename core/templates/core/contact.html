@@ -1,0 +1,49 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<section data-aos="fade-up" class="py-5">
+  <div class="container" style="max-width: 600px;">
+    <div class="card border-0 shadow rounded-4">
+      <div class="card-body p-4">
+        <h2 class="fw-bold text-center mb-3" style="color: var(--primary-color);">Contact Us</h2>
+        <p class="text-center text-muted mb-4">We'd love to hear from you. Please fill out the form below.</p>
+
+        <form method="post">
+          {% csrf_token %}
+          
+          <div class="mb-3">
+            {{ form.name.label_tag }}
+            {{ form.name }}
+            {% if form.name.errors %}
+              <div class="text-danger small">{{ form.name.errors }}</div>
+            {% endif %}
+          </div>
+
+          <div class="mb-3">
+            {{ form.email.label_tag }}
+            {{ form.email }}
+            {% if form.email.errors %}
+              <div class="text-danger small">{{ form.email.errors }}</div>
+            {% endif %}
+          </div>
+
+          <div class="mb-3">
+            {{ form.message.label_tag }}
+            {{ form.message }}
+            {% if form.message.errors %}
+              <div class="text-danger small">{{ form.message.errors }}</div>
+            {% endif %}
+          </div>
+
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary btn-lg">Send Message</button>
+          </div>
+        </form>
+
+        {% if success %}
+        <div class="alert alert-success mt-4 text-center">✅ Thank you! Your message has been sent successfully.</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
